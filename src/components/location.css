@@ -1,0 +1,12 @@
+.Location {
+    margin-top: 1px;
+    padding: 0;
+    border: 1px solid blue;
+
+}
+
+.Location h2,
+h3 {
+    margin: 0 0;
+    color: black;
+}
