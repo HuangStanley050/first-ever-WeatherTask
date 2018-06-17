@@ -75,8 +75,11 @@ class Weather extends Component {
             suburb: "Loading...",
             postCode: "Loading...",
             state: "loading....",
-            time: time
+            time: time,
+            temp: "",
+            type: "Celcius"
         };
+        this.toggleTemp = this.toggleTemp.bind(this);
 
     }
 
@@ -115,28 +118,10 @@ class Weather extends Component {
                     console.log(error);
                 });
         }
-
-        /*if (prevState.suburb == null) {
-            axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${geoCodingKey}`)
-                .then(function(response) {
-                    suburb = response.data.results[2].address_components[0].long_name; //suburb
-                    postcode = response.data.results[2].address_components[response.data.results[2].address_components.length - 1].short_name; //postcode
-                    state = response.data.results[2].address_components[2].short_name;
-                    console.log(suburb);
-                    console.log(postcode);
-                    console.log(state);
-                    this.setState({ suburb: suburb, postCode: postcode });
-                })
-                .catch(function(error) {
-                    console.log(error);
-                });
-        }*/
         else {
             console.log("componet has been updated already");
         }
     }
-
-
 
     componentDidMount() {
         //console.log("mounted");
@@ -150,49 +135,39 @@ class Weather extends Component {
             .catch((err) => {
                 console.error(err.message);
             });
+    }
 
+    toggleTemp(event) {
+        //alert(event.target.id);
+        var temperature = this.state.temp;
 
+        if (event.target.id === "celcius") {
+            if (this.state.type === "Fahrenheit") {
+                temperature = (temperature - 32) * 0.5556;
+                this.setState({ temp: temperature, type: "Celcius" });
+            }
+            //alert("Changed from Fahrenheit to Celcius");
+        }
 
-
-
-        /*axios.get(proxy + this.state.withLocation) //====weather api call====//
-                            .then((response) => {
-                                console.log(response);
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            });
-                        /*
-        
-                        //====google map api call====//
-                        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${geoCodingKey}`)
-                                .then(function(response) {
-                                    suburb = response.data.results[2].address_components[0].long_name; //suburb
-                                    postcode = response.data.results[2].address_components[response.data.results[2].address_components.length - 1].short_name; //postcode
-                                    console.log(suburb);
-                                    console.log(postcode)
-                                    this.setState({ suburb: suburb, postCode: postcode });
-                                })
-                                .catch(function(error) {
-                                    console.log(error);
-                                });
-
-                         */
-
-
-
+        if (event.target.id === "fahrenheit") {
+            if (this.state.type === "Celcius") {
+                temperature = (temperature * 1.8) + 32;
+                this.setState({ temp: temperature, type: "Fahrenheit" });
+            }
+            // alert("Changed from Celcius to Fahrenheit");
+        }
 
     }
 
     render() {
         return (
             <div className="Weather">
-                <Location postcode={this.state.postCode}state={this.state.state} suburb={this.state.suburb} time={this.state.time} icon={this.state.icon}/>
+                <Location postcode={this.state.postCode} state={this.state.state} suburb={this.state.suburb} time={this.state.time} icon={this.state.icon}/>
                 <div className="Wrapper">
                  
                  <div className="IconTempWrapper">
                    <Icon condition={this.state.icon}/>
-                   <Temperature temp={this.state.temp}/>
+                   <Temperature type={this.state.type} clicked={this.toggleTemp} temp={this.state.temp}/>
                  </div>
                 
                 </div>
