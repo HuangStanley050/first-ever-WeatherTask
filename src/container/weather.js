@@ -117,7 +117,7 @@ class Weather extends Component {
                         humid: response.data.currently.humidity,
                         icon: response.data.currently.icon
                     });
-                    return { lat: this.state.lat, long: this.state.long };
+                    return { lat: this.state.lat, long: this.state.long }; //this needs to return for the next api call to get location data
                 })
                 .then((obj) => {
                     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${obj.lat},${obj.long}&key=${geoCodingKey}`)
@@ -184,6 +184,7 @@ class Weather extends Component {
         let data = { ...this.state };
 
         return (
+            <div>
             <div className="Weather">
                 <Location postcode={this.state.postCode} state={this.state.state} suburb={this.state.suburb} time={this.state.time} icon={this.state.icon}/>
                 <div className="Wrapper">
@@ -198,6 +199,8 @@ class Weather extends Component {
                  </div>
                 
                 </div>
+            </div>
+                <h4>Icons courtesy of https://www.flaticon.com/about</h4>
             </div>
         );
 

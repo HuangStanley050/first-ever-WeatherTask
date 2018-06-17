@@ -4,9 +4,6 @@ import "./temperature.css";
 
 class Temperature extends Component {
 
-
-
-
     render() {
         let classTypeC = null;
         let classTypeF = null;
