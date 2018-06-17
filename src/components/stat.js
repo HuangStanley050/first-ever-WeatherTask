@@ -37,8 +37,8 @@ const stat = props => {
           </ul>
           <div className="Buttons">
            <button>Temperature</button>
-           <button>Precipitation</button>
-           <button>Wind</button>
+           <button disabled>Precipitation</button>
+           <button disabled>Wind</button>
           </div>
         </div>
     );

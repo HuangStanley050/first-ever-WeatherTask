@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./temperature.css";
+/*global isNaN */
 
 
 class Temperature extends Component {
@@ -17,6 +18,10 @@ class Temperature extends Component {
 
         let temp = this.props.temp;
         temp = parseInt(temp, 10);
+
+        if (isNaN(temp)) {
+            temp = "Loading...";
+        }
 
         return (
             <div className="Temperature">
