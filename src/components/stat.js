@@ -41,7 +41,7 @@ const stat = props => {
            <button>Wind</button>
           </div>
         </div>
-    )
+    );
 
 }
 
