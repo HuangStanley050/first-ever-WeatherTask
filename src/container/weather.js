@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Location from "../components/location";
 import Icon from "../components/icon";
+import Stat from "../components/stat";
 import Temperature from "../components/temperature";
 import "./weather.css";
 /*global navigator*/
@@ -24,6 +25,25 @@ const getPosition = (options) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, options);
     });
 };
+
+function timeTo12HrFormat(time) { // Take a time in 24 hour format and format it in 12 hour format
+    //courtesy of stackoverflow
+
+    var time_part_array = time.split(":");
+    var ampm = 'AM';
+
+    if (time_part_array[0] >= 12) {
+        ampm = 'PM';
+    }
+
+    if (time_part_array[0] > 12) {
+        time_part_array[0] = time_part_array[0] - 12;
+    }
+
+    var formatted_time = time_part_array[0] + ':' + time_part_array[1] + ':' + time_part_array[2] + ' ' + ampm;
+
+    return formatted_time;
+}
 
 
 
@@ -61,7 +81,8 @@ switch (new Date().getDay()) {
 
 
 var time = new Date().toLocaleTimeString();
-time = day + " " + time;
+var new_time = timeTo12HrFormat(time);
+time = day + " " + new_time;
 
 
 
@@ -100,7 +121,7 @@ class Weather extends Component {
                 })
                 .then((obj) => {
                     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${obj.lat},${obj.long}&key=${geoCodingKey}`)
-                        .then(function(response) {
+                        .then((response) => {
                             suburb = response.data.results[2].address_components[0].long_name; //suburb
                             postcode = response.data.results[2].address_components[response.data.results[2].address_components.length - 1].short_name; //postcode
                             state = response.data.results[2].address_components[2].short_name;
@@ -123,7 +144,7 @@ class Weather extends Component {
         }
     }
 
-    componentDidMount() {
+    componentWillMount() {
         //console.log("mounted");
         getPosition()
             .then((position) => {
@@ -160,6 +181,8 @@ class Weather extends Component {
     }
 
     render() {
+        let data = { ...this.state };
+
         return (
             <div className="Weather">
                 <Location postcode={this.state.postCode} state={this.state.state} suburb={this.state.suburb} time={this.state.time} icon={this.state.icon}/>
@@ -168,6 +191,10 @@ class Weather extends Component {
                  <div className="IconTempWrapper">
                    <Icon condition={this.state.icon}/>
                    <Temperature type={this.state.type} clicked={this.toggleTemp} temp={this.state.temp}/>
+                 </div>
+                 
+                 <div className="StatWrapper">
+                   <Stat weather={data}/>
                  </div>
                 
                 </div>

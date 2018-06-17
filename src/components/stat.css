@@ -1,0 +1,16 @@
+h2 {
+    color: black;
+}
+
+h2:first-letter {
+    text-transform: capitalize;
+}
+
+.Buttons {
+    margin-left: 20px;
+
+}
+
+button {
+    padding: 10px;
+}

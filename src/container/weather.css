@@ -19,8 +19,8 @@
     margin-top: 30px;
     height: 60%;
     display: flex;
-    justify-content: row;
-    border: 1px solid red;
+    justify-content: space-around;
+    /*border: 1px solid red;*/
 }
 
 .IconTempWrapper {
@@ -28,5 +28,12 @@
     height: 100%;
     display: flex;
     justify-content: space-around;
-    border: 1px solid green;
+    margin-top: 20px;
+    /*border: 1px solid green;*/
+}
+
+.StatWrapper {
+    width: 40%;
+    height: 100%;
+    /* border: 1px solid blue;*/
 }
