@@ -19,6 +19,14 @@
     margin-top: 30px;
     height: 60%;
     display: flex;
-    justify-content: space-around;
+    justify-content: row;
     border: 1px solid red;
+}
+
+.IconTempWrapper {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid green;
 }

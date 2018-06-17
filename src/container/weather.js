@@ -1,25 +1,12 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Location from "../components/location";
+import Icon from "../components/icon";
+import Temperature from "../components/temperature";
 import "./weather.css";
 /*global navigator*/
 
-//"https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key="
 
-/*navigator.geolocation.getCurrentPosition((position) => {
-    long = position.coords.longitude;
-    lat = position.coords.latitude;
-    withLocation = apiCall + lat + "," + long;
-    //this.setState({ long: long });
-
-});*/
-
-/*
-async function waitForPromise() {
-        let result = await Promise.resolve('this is a sample promise');
-    }
-
-*/
 
 const apiCall = "https://api.darksky.net/forecast/fedc5ac5f643d1b628fe877199f12aae/";
 const proxy = "https://cors-anywhere.herokuapp.com/";
@@ -38,8 +25,41 @@ const getPosition = (options) => {
     });
 };
 
-var d = new Date();
-var day = d.getDay();
+
+
+
+//var d = new Date();
+//var day = d.getDay();
+
+var day;
+switch (new Date().getDay()) {
+    case 0:
+        day = "Sunday";
+        break;
+    case 1:
+        day = "Monday";
+        break;
+    case 2:
+        day = "Tuesday";
+        break;
+    case 3:
+        day = "Wednesday";
+        break;
+    case 4:
+        day = "Thursday";
+        break;
+    case 5:
+        day = "Friday";
+        break;
+    case 6:
+        day = "Saturday";
+        break;
+    default:
+        break;
+}
+
+
+
 var time = new Date().toLocaleTimeString();
 time = day + " " + time;
 
@@ -52,15 +72,16 @@ class Weather extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            suburb: null,
-            postCode: null,
+            suburb: "Loading...",
+            postCode: "Loading...",
+            state: "loading....",
             time: time
         };
 
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log("updated");
+        //console.log("updated");
 
         if (prevState.location !== this.state.location) {
             axios.get(proxy + this.state.location) //====weather api call====//
@@ -83,11 +104,11 @@ class Weather extends Component {
                             console.log(suburb);
                             console.log(postcode);
                             console.log(state);
-                            return { post: postcode, suburb: suburb };
+                            return { post: postcode, suburb: suburb, state: state };
                         })
 
                         .then((result) => {
-                            this.setState({ postCode: result.post, suburb: result.suburb });
+                            this.setState({ postCode: result.post, suburb: result.suburb, state: state });
                         })
                 })
                 .catch((error) => {
@@ -118,7 +139,7 @@ class Weather extends Component {
 
 
     componentDidMount() {
-        console.log("mounted");
+        //console.log("mounted");
         getPosition()
             .then((position) => {
                 long = position.coords.longitude;
@@ -166,8 +187,14 @@ class Weather extends Component {
     render() {
         return (
             <div className="Weather">
-                <Location/>
+                <Location postcode={this.state.postCode}state={this.state.state} suburb={this.state.suburb} time={this.state.time} icon={this.state.icon}/>
                 <div className="Wrapper">
+                 
+                 <div className="IconTempWrapper">
+                   <Icon condition={this.state.icon}/>
+                   <Temperature temp={this.state.temp}/>
+                 </div>
+                
                 </div>
             </div>
         );
